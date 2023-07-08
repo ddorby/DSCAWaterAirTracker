@@ -7,14 +7,17 @@ airquality\SensorID.class
 airquality\Thresholds$Builder.class
 airquality\SuccessStatusOrBuilder.class
 airquality\AQMSGrpc$1.class
+airquality\client\AirqualityClient.class
 airquality\AirQualityDataOrBuilder.class
 airquality\COLevels$Builder.class
 airquality\TimeRange$Builder.class
 airquality\SuccessStatus$1.class
+airquality\AQMSImpl.class
 airquality\AirQualityData$1.class
 airquality\AQMSGrpc$AQMSStub.class
 airquality\Airquality.class
 airquality\COLevelsOrBuilder.class
+airquality\server\AirqualityServer.class
 airquality\AQMSGrpc$AQMSImplBase.class
 airquality\SensorIDOrBuilder.class
 airquality\AQMSGrpc$AQMSFutureStub.class
