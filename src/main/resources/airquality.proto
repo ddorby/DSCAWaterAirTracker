@@ -1,0 +1,38 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package airquality;
+
+message SensorID {
+  string id = 1;
+}
+
+message COLevels {
+  float levels = 1;
+}
+
+message TimeRange {
+  int64 start_timestamp = 1;
+  int64 end_timestamp = 2;
+}
+
+message AirQualityData {
+  // Define the fields for air quality data
+  // Example fields: CO levels, temperature, etc.
+  float co_levels = 1;
+  // Add more fields as needed
+}
+
+message Thresholds {
+  float co_thresholds = 1;
+  // Add more thresholds as needed
+}
+
+message SuccessStatus {
+  bool success = 1;
+}
+
+service AQMS {
+  rpc GetCurrentAirQuality(SensorID) returns (COLevels) {}
+  rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
+  rpc SetAlertThreshold(Thresholds) returns (SuccessStatus) {}
+}
