@@ -36,3 +36,5 @@ service AQMS {
   rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
   rpc SetAlertThreshold(Thresholds) returns (SuccessStatus) {}
 }
+
+//test for gitHub commit 2
