@@ -1,0 +1,55 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package waterquality;
+
+// Message for the request containing sensor ID.
+message SensorId {
+  string id = 1;
+}
+
+// Message for the response containing current pH levels.
+message CurrentPhLevels {
+  float ph = 1;
+}
+
+// Message for the request containing start and end timestamps.
+message WaterQualityHistoryRequest {
+  int64 start_timestamp = 1;
+  int64 end_timestamp = 2;
+}
+
+// Message for water quality data.
+message WaterQualityData {
+  float ph = 1;
+  float turbidity = 2;
+  float tds = 3;
+  float temperature = 4;
+}
+
+// Message for the response containing a list of water quality data.
+message WaterQualityHistoryResponse {
+  repeated WaterQualityData data = 1;
+}
+
+// Message for the request containing pH thresholds.
+message SetAlertThresholdRequest {
+  float min_ph = 1;
+  float max_ph = 2;
+}
+
+// Message for the response confirming the thresholds have been set.
+message SetAlertThresholdResponse {
+  bool success = 1;
+}
+
+// Water Quality Monitoring Service (WQMS) service definition.
+service WQMS {
+  // RPC method for getting current pH levels.
+  rpc GetCurrentWaterQuality (SensorId) returns (CurrentPhLevels) {}
+
+  // RPC method for getting water quality history within a specified period.
+  rpc GetWaterQualityHistory (WaterQualityHistoryRequest) returns (WaterQualityHistoryResponse) {}
+
+  // RPC method for setting pH thresholds.
+  rpc SetAlertThreshold (SetAlertThresholdRequest) returns (SetAlertThresholdResponse) {}
+}

@@ -21,7 +21,7 @@ public class AQMSImpl extends AQMSImplBase {
 		//super.getCurrentAirQuality(request, responseObserver);
 		
 		// Create the response
-		COLevels response = COLevels.newBuilder().setLevels(0.0f).build();
+		COLevels response = COLevels.newBuilder().setLevels(10.0f).build();
 		
 		//Send the response back to the client 
 		responseObserver.onNext(response);
@@ -57,7 +57,10 @@ public class AQMSImpl extends AQMSImplBase {
 
 	    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:path/to/my/database.db")) { 
 	    	// Establish a connection to the SQLite database using the JDBC driver
-	        // Replace "path/to/my/database.db" with the actual path to your SQLite database
+	        // Replace "path/to/my/database.db" with the actual path to the SQLite database
+	    	
+	    	
+	    	
 
 	        // Prepare a SQL statement to retrieve air quality data within the given time range
 	        String query = "SELECT co_levels FROM air_quality WHERE timestamp BETWEEN ? AND ?";
