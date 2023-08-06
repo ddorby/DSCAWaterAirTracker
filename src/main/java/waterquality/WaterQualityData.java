@@ -21,9 +21,6 @@ private static final long serialVersionUID = 0L;
   }
   private WaterQualityData() {
     ph_ = 0F;
-    turbidity_ = 0F;
-    tds_ = 0F;
-    temperature_ = 0F;
   }
 
   @java.lang.Override
@@ -53,21 +50,6 @@ private static final long serialVersionUID = 0L;
           case 13: {
 
             ph_ = input.readFloat();
-            break;
-          }
-          case 21: {
-
-            turbidity_ = input.readFloat();
-            break;
-          }
-          case 29: {
-
-            tds_ = input.readFloat();
-            break;
-          }
-          case 37: {
-
-            temperature_ = input.readFloat();
             break;
           }
           default: {
@@ -105,37 +87,16 @@ private static final long serialVersionUID = 0L;
   public static final int PH_FIELD_NUMBER = 1;
   private float ph_;
   /**
+   * <pre>
+   *float turbidity = 2;
+   *float tds = 3;
+   *float temperature = 4;
+   * </pre>
+   *
    * <code>float ph = 1;</code>
    */
   public float getPh() {
     return ph_;
-  }
-
-  public static final int TURBIDITY_FIELD_NUMBER = 2;
-  private float turbidity_;
-  /**
-   * <code>float turbidity = 2;</code>
-   */
-  public float getTurbidity() {
-    return turbidity_;
-  }
-
-  public static final int TDS_FIELD_NUMBER = 3;
-  private float tds_;
-  /**
-   * <code>float tds = 3;</code>
-   */
-  public float getTds() {
-    return tds_;
-  }
-
-  public static final int TEMPERATURE_FIELD_NUMBER = 4;
-  private float temperature_;
-  /**
-   * <code>float temperature = 4;</code>
-   */
-  public float getTemperature() {
-    return temperature_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -155,15 +116,6 @@ private static final long serialVersionUID = 0L;
     if (ph_ != 0F) {
       output.writeFloat(1, ph_);
     }
-    if (turbidity_ != 0F) {
-      output.writeFloat(2, turbidity_);
-    }
-    if (tds_ != 0F) {
-      output.writeFloat(3, tds_);
-    }
-    if (temperature_ != 0F) {
-      output.writeFloat(4, temperature_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -176,18 +128,6 @@ private static final long serialVersionUID = 0L;
     if (ph_ != 0F) {
       size += com.google.protobuf.CodedOutputStream
         .computeFloatSize(1, ph_);
-    }
-    if (turbidity_ != 0F) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeFloatSize(2, turbidity_);
-    }
-    if (tds_ != 0F) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeFloatSize(3, tds_);
-    }
-    if (temperature_ != 0F) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeFloatSize(4, temperature_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -209,18 +149,6 @@ private static final long serialVersionUID = 0L;
         java.lang.Float.floatToIntBits(getPh())
         == java.lang.Float.floatToIntBits(
             other.getPh()));
-    result = result && (
-        java.lang.Float.floatToIntBits(getTurbidity())
-        == java.lang.Float.floatToIntBits(
-            other.getTurbidity()));
-    result = result && (
-        java.lang.Float.floatToIntBits(getTds())
-        == java.lang.Float.floatToIntBits(
-            other.getTds()));
-    result = result && (
-        java.lang.Float.floatToIntBits(getTemperature())
-        == java.lang.Float.floatToIntBits(
-            other.getTemperature()));
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -235,15 +163,6 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + PH_FIELD_NUMBER;
     hash = (53 * hash) + java.lang.Float.floatToIntBits(
         getPh());
-    hash = (37 * hash) + TURBIDITY_FIELD_NUMBER;
-    hash = (53 * hash) + java.lang.Float.floatToIntBits(
-        getTurbidity());
-    hash = (37 * hash) + TDS_FIELD_NUMBER;
-    hash = (53 * hash) + java.lang.Float.floatToIntBits(
-        getTds());
-    hash = (37 * hash) + TEMPERATURE_FIELD_NUMBER;
-    hash = (53 * hash) + java.lang.Float.floatToIntBits(
-        getTemperature());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -383,12 +302,6 @@ private static final long serialVersionUID = 0L;
       super.clear();
       ph_ = 0F;
 
-      turbidity_ = 0F;
-
-      tds_ = 0F;
-
-      temperature_ = 0F;
-
       return this;
     }
 
@@ -416,9 +329,6 @@ private static final long serialVersionUID = 0L;
     public waterquality.WaterQualityData buildPartial() {
       waterquality.WaterQualityData result = new waterquality.WaterQualityData(this);
       result.ph_ = ph_;
-      result.turbidity_ = turbidity_;
-      result.tds_ = tds_;
-      result.temperature_ = temperature_;
       onBuilt();
       return result;
     }
@@ -470,15 +380,6 @@ private static final long serialVersionUID = 0L;
       if (other.getPh() != 0F) {
         setPh(other.getPh());
       }
-      if (other.getTurbidity() != 0F) {
-        setTurbidity(other.getTurbidity());
-      }
-      if (other.getTds() != 0F) {
-        setTds(other.getTds());
-      }
-      if (other.getTemperature() != 0F) {
-        setTemperature(other.getTemperature());
-      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -510,12 +411,24 @@ private static final long serialVersionUID = 0L;
 
     private float ph_ ;
     /**
+     * <pre>
+     *float turbidity = 2;
+     *float tds = 3;
+     *float temperature = 4;
+     * </pre>
+     *
      * <code>float ph = 1;</code>
      */
     public float getPh() {
       return ph_;
     }
     /**
+     * <pre>
+     *float turbidity = 2;
+     *float tds = 3;
+     *float temperature = 4;
+     * </pre>
+     *
      * <code>float ph = 1;</code>
      */
     public Builder setPh(float value) {
@@ -525,89 +438,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *float turbidity = 2;
+     *float tds = 3;
+     *float temperature = 4;
+     * </pre>
+     *
      * <code>float ph = 1;</code>
      */
     public Builder clearPh() {
       
       ph_ = 0F;
-      onChanged();
-      return this;
-    }
-
-    private float turbidity_ ;
-    /**
-     * <code>float turbidity = 2;</code>
-     */
-    public float getTurbidity() {
-      return turbidity_;
-    }
-    /**
-     * <code>float turbidity = 2;</code>
-     */
-    public Builder setTurbidity(float value) {
-      
-      turbidity_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>float turbidity = 2;</code>
-     */
-    public Builder clearTurbidity() {
-      
-      turbidity_ = 0F;
-      onChanged();
-      return this;
-    }
-
-    private float tds_ ;
-    /**
-     * <code>float tds = 3;</code>
-     */
-    public float getTds() {
-      return tds_;
-    }
-    /**
-     * <code>float tds = 3;</code>
-     */
-    public Builder setTds(float value) {
-      
-      tds_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>float tds = 3;</code>
-     */
-    public Builder clearTds() {
-      
-      tds_ = 0F;
-      onChanged();
-      return this;
-    }
-
-    private float temperature_ ;
-    /**
-     * <code>float temperature = 4;</code>
-     */
-    public float getTemperature() {
-      return temperature_;
-    }
-    /**
-     * <code>float temperature = 4;</code>
-     */
-    public Builder setTemperature(float value) {
-      
-      temperature_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>float temperature = 4;</code>
-     */
-    public Builder clearTemperature() {
-      
-      temperature_ = 0F;
       onChanged();
       return this;
     }

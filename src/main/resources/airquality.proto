@@ -10,10 +10,10 @@ message COLevels {
   float levels = 1;
 }
 
-message TimeRange {
-  int64 start_timestamp = 1;
-  int64 end_timestamp = 2;
-}
+//message TimeRange {
+  //int64 start_timestamp = 1;
+  //int64 end_timestamp = 2;
+//}
 
 message AirQualityData {
   // Define the fields for air quality data
@@ -33,7 +33,7 @@ message SuccessStatus {
 
 service AQMS {
   rpc GetCurrentAirQuality(SensorID) returns (COLevels) {}
-  rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
+  //rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
   rpc SetAlertThreshold(Thresholds) returns (SuccessStatus) {}
 }
 

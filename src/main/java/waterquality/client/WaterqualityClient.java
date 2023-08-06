@@ -6,7 +6,6 @@ import waterquality.WQMSGrpc;
 import waterquality.WaterQualityData;
 import waterquality.SensorId;
 import waterquality.CurrentPhLevels;
-import waterquality.WaterQualityHistoryRequest;
 import waterquality.WaterQualityHistoryResponse;
 import waterquality.SetAlertThresholdRequest;
 import waterquality.SetAlertThresholdResponse;
@@ -22,7 +21,6 @@ public class WaterqualityClient {
 
         // Invoke RPC methods
         getCurrentWaterQuality(stub, "sensor1");
-        getWaterQualityHistory(stub, 1626048000L, 1626148000L);
         setAlertThreshold(stub, 6.0f, 8.5f);
 
         // Shutdown the channel
@@ -42,12 +40,12 @@ public class WaterqualityClient {
         System.out.println("Sensor: " + sensorId);
     }
 
-    private static void getWaterQualityHistory(WQMSGrpc.WQMSBlockingStub stub, long startTimestamp, long endTimestamp) {
+    /*private static void getWaterQualityHistory(WQMSGrpc.WQMSBlockingStub stub, long startTimestamp, long endTimestamp) {
         // Create the request message
         WaterQualityHistoryRequest request = WaterQualityHistoryRequest.newBuilder()
         		.setStartTimestamp(startTimestamp)
         		.setEndTimestamp(endTimestamp)
-        		.build();
+        		.build();*
 
         // Invoke the RPC method
         WaterQualityHistoryResponse response = stub.getWaterQualityHistory(request);
@@ -62,7 +60,7 @@ public class WaterqualityClient {
             // Process each data point as needed
             System.out.println("pH: " + ph + ", Turbidity: " + turbidity + ", TDS: " + tds + ", Temperature: " + temperature);
         }
-    }
+    }*/
 
     private static void setAlertThreshold(WQMSGrpc.WQMSBlockingStub stub, float minPh, float maxPh) {
         // Create the request message

@@ -62,38 +62,6 @@ public final class WQMSGrpc {
      return getGetCurrentWaterQualityMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<waterquality.WaterQualityHistoryRequest,
-      waterquality.WaterQualityHistoryResponse> getGetWaterQualityHistoryMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "GetWaterQualityHistory",
-      requestType = waterquality.WaterQualityHistoryRequest.class,
-      responseType = waterquality.WaterQualityHistoryResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<waterquality.WaterQualityHistoryRequest,
-      waterquality.WaterQualityHistoryResponse> getGetWaterQualityHistoryMethod() {
-    io.grpc.MethodDescriptor<waterquality.WaterQualityHistoryRequest, waterquality.WaterQualityHistoryResponse> getGetWaterQualityHistoryMethod;
-    if ((getGetWaterQualityHistoryMethod = WQMSGrpc.getGetWaterQualityHistoryMethod) == null) {
-      synchronized (WQMSGrpc.class) {
-        if ((getGetWaterQualityHistoryMethod = WQMSGrpc.getGetWaterQualityHistoryMethod) == null) {
-          WQMSGrpc.getGetWaterQualityHistoryMethod = getGetWaterQualityHistoryMethod = 
-              io.grpc.MethodDescriptor.<waterquality.WaterQualityHistoryRequest, waterquality.WaterQualityHistoryResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(
-                  "waterquality.WQMS", "GetWaterQualityHistory"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  waterquality.WaterQualityHistoryRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  waterquality.WaterQualityHistoryResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new WQMSMethodDescriptorSupplier("GetWaterQualityHistory"))
-                  .build();
-          }
-        }
-     }
-     return getGetWaterQualityHistoryMethod;
-  }
-
   private static volatile io.grpc.MethodDescriptor<waterquality.SetAlertThresholdRequest,
       waterquality.SetAlertThresholdResponse> getSetAlertThresholdMethod;
 
@@ -168,16 +136,6 @@ public final class WQMSGrpc {
 
     /**
      * <pre>
-     * RPC method for getting water quality history within a specified period.
-     * </pre>
-     */
-    public void getWaterQualityHistory(waterquality.WaterQualityHistoryRequest request,
-        io.grpc.stub.StreamObserver<waterquality.WaterQualityHistoryResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetWaterQualityHistoryMethod(), responseObserver);
-    }
-
-    /**
-     * <pre>
      * RPC method for setting pH thresholds.
      * </pre>
      */
@@ -195,13 +153,6 @@ public final class WQMSGrpc {
                 waterquality.SensorId,
                 waterquality.CurrentPhLevels>(
                   this, METHODID_GET_CURRENT_WATER_QUALITY)))
-          .addMethod(
-            getGetWaterQualityHistoryMethod(),
-            asyncUnaryCall(
-              new MethodHandlers<
-                waterquality.WaterQualityHistoryRequest,
-                waterquality.WaterQualityHistoryResponse>(
-                  this, METHODID_GET_WATER_QUALITY_HISTORY)))
           .addMethod(
             getSetAlertThresholdMethod(),
             asyncUnaryCall(
@@ -243,17 +194,6 @@ public final class WQMSGrpc {
         io.grpc.stub.StreamObserver<waterquality.CurrentPhLevels> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getGetCurrentWaterQualityMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     * <pre>
-     * RPC method for getting water quality history within a specified period.
-     * </pre>
-     */
-    public void getWaterQualityHistory(waterquality.WaterQualityHistoryRequest request,
-        io.grpc.stub.StreamObserver<waterquality.WaterQualityHistoryResponse> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(getGetWaterQualityHistoryMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -301,16 +241,6 @@ public final class WQMSGrpc {
 
     /**
      * <pre>
-     * RPC method for getting water quality history within a specified period.
-     * </pre>
-     */
-    public waterquality.WaterQualityHistoryResponse getWaterQualityHistory(waterquality.WaterQualityHistoryRequest request) {
-      return blockingUnaryCall(
-          getChannel(), getGetWaterQualityHistoryMethod(), getCallOptions(), request);
-    }
-
-    /**
-     * <pre>
      * RPC method for setting pH thresholds.
      * </pre>
      */
@@ -354,17 +284,6 @@ public final class WQMSGrpc {
 
     /**
      * <pre>
-     * RPC method for getting water quality history within a specified period.
-     * </pre>
-     */
-    public com.google.common.util.concurrent.ListenableFuture<waterquality.WaterQualityHistoryResponse> getWaterQualityHistory(
-        waterquality.WaterQualityHistoryRequest request) {
-      return futureUnaryCall(
-          getChannel().newCall(getGetWaterQualityHistoryMethod(), getCallOptions()), request);
-    }
-
-    /**
-     * <pre>
      * RPC method for setting pH thresholds.
      * </pre>
      */
@@ -376,8 +295,7 @@ public final class WQMSGrpc {
   }
 
   private static final int METHODID_GET_CURRENT_WATER_QUALITY = 0;
-  private static final int METHODID_GET_WATER_QUALITY_HISTORY = 1;
-  private static final int METHODID_SET_ALERT_THRESHOLD = 2;
+  private static final int METHODID_SET_ALERT_THRESHOLD = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -399,10 +317,6 @@ public final class WQMSGrpc {
         case METHODID_GET_CURRENT_WATER_QUALITY:
           serviceImpl.getCurrentWaterQuality((waterquality.SensorId) request,
               (io.grpc.stub.StreamObserver<waterquality.CurrentPhLevels>) responseObserver);
-          break;
-        case METHODID_GET_WATER_QUALITY_HISTORY:
-          serviceImpl.getWaterQualityHistory((waterquality.WaterQualityHistoryRequest) request,
-              (io.grpc.stub.StreamObserver<waterquality.WaterQualityHistoryResponse>) responseObserver);
           break;
         case METHODID_SET_ALERT_THRESHOLD:
           serviceImpl.setAlertThreshold((waterquality.SetAlertThresholdRequest) request,
@@ -470,7 +384,6 @@ public final class WQMSGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new WQMSFileDescriptorSupplier())
               .addMethod(getGetCurrentWaterQualityMethod())
-              .addMethod(getGetWaterQualityHistoryMethod())
               .addMethod(getSetAlertThresholdMethod())
               .build();
         }

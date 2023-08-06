@@ -12,18 +12,18 @@ message CurrentPhLevels {
   float ph = 1;
 }
 
-// Message for the request containing start and end timestamps.
-message WaterQualityHistoryRequest {
-  int64 start_timestamp = 1;
-  int64 end_timestamp = 2;
-}
+//Message for the request containing start and end timestamps.
+//message WaterQualityHistoryRequest {
+//int64 start_timestamp = 1;
+//int64 end_timestamp = 2;
+//}
 
 // Message for water quality data.
 message WaterQualityData {
   float ph = 1;
-  float turbidity = 2;
-  float tds = 3;
-  float temperature = 4;
+  //float turbidity = 2;
+  //float tds = 3;
+  //float temperature = 4;
 }
 
 // Message for the response containing a list of water quality data.
@@ -48,7 +48,7 @@ service WQMS {
   rpc GetCurrentWaterQuality (SensorId) returns (CurrentPhLevels) {}
 
   // RPC method for getting water quality history within a specified period.
-  rpc GetWaterQualityHistory (WaterQualityHistoryRequest) returns (WaterQualityHistoryResponse) {}
+  //rpc GetWaterQualityHistory (WaterQualityHistoryRequest) returns (WaterQualityHistoryResponse) {}
 
   // RPC method for setting pH thresholds.
   rpc SetAlertThreshold (SetAlertThresholdRequest) returns (SetAlertThresholdResponse) {}

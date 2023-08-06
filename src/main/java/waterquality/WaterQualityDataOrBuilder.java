@@ -8,22 +8,13 @@ public interface WaterQualityDataOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   *float turbidity = 2;
+   *float tds = 3;
+   *float temperature = 4;
+   * </pre>
+   *
    * <code>float ph = 1;</code>
    */
   float getPh();
-
-  /**
-   * <code>float turbidity = 2;</code>
-   */
-  float getTurbidity();
-
-  /**
-   * <code>float tds = 3;</code>
-   */
-  float getTds();
-
-  /**
-   * <code>float temperature = 4;</code>
-   */
-  float getTemperature();
 }

@@ -20,7 +20,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private CurrentPhLevels() {
-    ph_ = 0F;
+    ph_ = 7F;
   }
 
   @java.lang.Override

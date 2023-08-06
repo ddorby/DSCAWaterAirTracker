@@ -6,22 +6,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 import java.sql.*;
 
 
 import airquality.AQMSGrpc.AQMSImplBase;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import waterquality.WQMSImpl;
 
 public class AQMSImpl extends AQMSImplBase {
-
+	
+	AQMSBDB db;
+	
+	public AQMSImpl() {
+		
+		this.db = new AQMSBDB();
+	}
+	
 	@Override
 	public void getCurrentAirQuality(SensorID request, StreamObserver<COLevels> responseObserver) {
 
 		System.out.println("request SensorID" + request.getId());
 		//super.getCurrentAirQuality(request, responseObserver);
 		
+		float airQuality = db.getSensorAirQuality(request.getId());
+		
 		// Create the response
-		COLevels response = COLevels.newBuilder().setLevels(10.0f).build();
+		COLevels response = COLevels.newBuilder().setLevels(airQuality).build();
 		
 		//Send the response back to the client 
 		responseObserver.onNext(response);
@@ -34,7 +47,7 @@ public class AQMSImpl extends AQMSImplBase {
 	 * Air quality history
 	 */
 	
-	@Override
+	/*@Override
 	public void getAirQualityHistory(TimeRange request, StreamObserver<AirQualityData> responseObserver) {
 
 	    long startTime = request.getStartTimestamp();
@@ -89,7 +102,7 @@ public class AQMSImpl extends AQMSImplBase {
 
 	    // Return the list of retrieved air quality data
 	    return airQualityHistory;
-	}
+	}*/
 	
 	/* methods to set the 
 	 * Air quality thresholds 
@@ -117,8 +130,10 @@ public class AQMSImpl extends AQMSImplBase {
 	        // Placeholder implementation: Check if the provided threshold is valid (e.g., greater than 0)
 	        if (coThresholds > 0) {
 	            // Set the CO alert threshold to 70ppm (dangerous level for CO)
-	            float thresholdValue = 70.0f;
-	            System.out.println("Setting CO alert threshold to: " + thresholdValue);
+	        	
+	        	db.setThreshhold(coThresholds);
+
+	            System.out.println("Setting CO alert threshold to: " + coThresholds);
 	            return true;
 	        } else {
 	            System.out.println("Invalid CO alert threshold: " + coThresholds);

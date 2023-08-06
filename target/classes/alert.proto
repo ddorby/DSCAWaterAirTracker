@@ -1,0 +1,51 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package alert;
+
+// The Alert Notification Service (ANS) service definition.
+service AlertNotificationService {
+  // RPC Method 1: RegisterForAlerts
+  rpc RegisterForAlerts(RegisterRequest) returns (RegisterResponse) {}
+
+  // RPC Method 2: UnregisterForAlerts
+  rpc UnregisterForAlerts(UnregisterRequest) returns (UnregisterResponse) {}
+
+  // RPC Method 3: StreamAlerts
+  rpc StreamAlerts(stream StreamAlertsRequest) returns (stream AlertMessage) {}
+}
+
+// Request message for RegisterForAlerts method.
+message RegisterRequest {
+  // User contact information for notification.
+  string contactInformation = 1;
+}
+
+// Response message for RegisterForAlerts method.
+message RegisterResponse {
+  // Success status message confirming registration.
+  string message = 1;
+}
+
+// Request message for UnregisterForAlerts method.
+message UnregisterRequest {
+  // User contact information.
+  string contactInformation = 1;
+}
+
+// Response message for UnregisterForAlerts method.
+message UnregisterResponse {
+  // Success status message confirming unregistration.
+  string message = 1;
+}
+
+// Request message for StreamAlerts method.
+message StreamAlertsRequest {
+  // User contact information.
+  string contactInformation = 1;
+}
+
+// Real-time alert message sent by the server.
+message AlertMessage {
+  // Alert message content.
+  string content = 1;
+}

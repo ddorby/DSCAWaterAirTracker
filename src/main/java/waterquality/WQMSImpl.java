@@ -7,7 +7,6 @@ import io.grpc.stub.StreamObserver;
 import waterquality.WQMSGrpc;
 import waterquality.SensorId;
 import waterquality.CurrentPhLevels;
-import waterquality.WaterQualityHistoryRequest;
 import waterquality.WaterQualityHistoryResponse;
 import waterquality.SetAlertThresholdRequest;
 import waterquality.SetAlertThresholdResponse;
@@ -18,25 +17,6 @@ import java.util.List;
 
 public class WQMSImpl extends WQMSGrpc.WQMSImplBase {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        // Create a new server
-        Server server = ServerBuilder.forPort(50051).addService(new WQMSImpl()).build();
-
-        // Start the server
-        server.start();
-
-        System.out.println("Server started and listening on port 50051");
-
-        // Server shutdown hook
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Shutting down server...");
-            server.shutdown();
-            System.out.println("Server shutdown complete.");
-        }));
-
-        // Keep the main thread alive
-        server.awaitTermination();
-    }
 
     @Override
     public void getCurrentWaterQuality(SensorId request, StreamObserver<CurrentPhLevels> responseObserver) {
@@ -60,7 +40,7 @@ public class WQMSImpl extends WQMSGrpc.WQMSImplBase {
         return (float) (Math.random() * 14);
     }
 
-    @Override
+    /*@Override
     public void getWaterQualityHistory(WaterQualityHistoryRequest request, StreamObserver<WaterQualityHistoryResponse> responseObserver) {
         // Logic to fetch water quality history within the specified period
         long startTimestamp = request.getStartTimestamp();
@@ -75,7 +55,7 @@ public class WQMSImpl extends WQMSGrpc.WQMSImplBase {
         // Send the response back to the client
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-    }
+    }*/
 
     @Override
     public void setAlertThreshold(SetAlertThresholdRequest request, StreamObserver<SetAlertThresholdResponse> responseObserver) {

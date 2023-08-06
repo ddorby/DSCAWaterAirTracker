@@ -59,38 +59,6 @@ public final class AQMSGrpc {
      return getGetCurrentAirQualityMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<airquality.TimeRange,
-      airquality.AirQualityData> getGetAirQualityHistoryMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "GetAirQualityHistory",
-      requestType = airquality.TimeRange.class,
-      responseType = airquality.AirQualityData.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<airquality.TimeRange,
-      airquality.AirQualityData> getGetAirQualityHistoryMethod() {
-    io.grpc.MethodDescriptor<airquality.TimeRange, airquality.AirQualityData> getGetAirQualityHistoryMethod;
-    if ((getGetAirQualityHistoryMethod = AQMSGrpc.getGetAirQualityHistoryMethod) == null) {
-      synchronized (AQMSGrpc.class) {
-        if ((getGetAirQualityHistoryMethod = AQMSGrpc.getGetAirQualityHistoryMethod) == null) {
-          AQMSGrpc.getGetAirQualityHistoryMethod = getGetAirQualityHistoryMethod = 
-              io.grpc.MethodDescriptor.<airquality.TimeRange, airquality.AirQualityData>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "airquality.AQMS", "GetAirQualityHistory"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  airquality.TimeRange.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  airquality.AirQualityData.getDefaultInstance()))
-                  .setSchemaDescriptor(new AQMSMethodDescriptorSupplier("GetAirQualityHistory"))
-                  .build();
-          }
-        }
-     }
-     return getGetAirQualityHistoryMethod;
-  }
-
   private static volatile io.grpc.MethodDescriptor<airquality.Thresholds,
       airquality.SuccessStatus> getSetAlertThresholdMethod;
 
@@ -158,13 +126,9 @@ public final class AQMSGrpc {
     }
 
     /**
-     */
-    public void getAirQualityHistory(airquality.TimeRange request,
-        io.grpc.stub.StreamObserver<airquality.AirQualityData> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetAirQualityHistoryMethod(), responseObserver);
-    }
-
-    /**
+     * <pre>
+     *rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
+     * </pre>
      */
     public void setAlertThreshold(airquality.Thresholds request,
         io.grpc.stub.StreamObserver<airquality.SuccessStatus> responseObserver) {
@@ -180,13 +144,6 @@ public final class AQMSGrpc {
                 airquality.SensorID,
                 airquality.COLevels>(
                   this, METHODID_GET_CURRENT_AIR_QUALITY)))
-          .addMethod(
-            getGetAirQualityHistoryMethod(),
-            asyncServerStreamingCall(
-              new MethodHandlers<
-                airquality.TimeRange,
-                airquality.AirQualityData>(
-                  this, METHODID_GET_AIR_QUALITY_HISTORY)))
           .addMethod(
             getSetAlertThresholdMethod(),
             asyncUnaryCall(
@@ -225,14 +182,9 @@ public final class AQMSGrpc {
     }
 
     /**
-     */
-    public void getAirQualityHistory(airquality.TimeRange request,
-        io.grpc.stub.StreamObserver<airquality.AirQualityData> responseObserver) {
-      asyncServerStreamingCall(
-          getChannel().newCall(getGetAirQualityHistoryMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
+     * <pre>
+     *rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
+     * </pre>
      */
     public void setAlertThreshold(airquality.Thresholds request,
         io.grpc.stub.StreamObserver<airquality.SuccessStatus> responseObserver) {
@@ -261,20 +213,15 @@ public final class AQMSGrpc {
 
     /**
      */
-    public airquality.COLevels getCurrentAirQuality(airquality.SensorID request) {
+    public static airquality.COLevels getCurrentAirQuality(airquality.SensorID request) {
       return blockingUnaryCall(
           getChannel(), getGetCurrentAirQualityMethod(), getCallOptions(), request);
     }
 
     /**
-     */
-    public java.util.Iterator<airquality.AirQualityData> getAirQualityHistory(
-        airquality.TimeRange request) {
-      return blockingServerStreamingCall(
-          getChannel(), getGetAirQualityHistoryMethod(), getCallOptions(), request);
-    }
-
-    /**
+     * <pre>
+     *rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
+     * </pre>
      */
     public airquality.SuccessStatus setAlertThreshold(airquality.Thresholds request) {
       return blockingUnaryCall(
@@ -309,6 +256,9 @@ public final class AQMSGrpc {
     }
 
     /**
+     * <pre>
+     *rpc GetAirQualityHistory(TimeRange) returns (stream AirQualityData) {}
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<airquality.SuccessStatus> setAlertThreshold(
         airquality.Thresholds request) {
@@ -318,8 +268,7 @@ public final class AQMSGrpc {
   }
 
   private static final int METHODID_GET_CURRENT_AIR_QUALITY = 0;
-  private static final int METHODID_GET_AIR_QUALITY_HISTORY = 1;
-  private static final int METHODID_SET_ALERT_THRESHOLD = 2;
+  private static final int METHODID_SET_ALERT_THRESHOLD = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -341,10 +290,6 @@ public final class AQMSGrpc {
         case METHODID_GET_CURRENT_AIR_QUALITY:
           serviceImpl.getCurrentAirQuality((airquality.SensorID) request,
               (io.grpc.stub.StreamObserver<airquality.COLevels>) responseObserver);
-          break;
-        case METHODID_GET_AIR_QUALITY_HISTORY:
-          serviceImpl.getAirQualityHistory((airquality.TimeRange) request,
-              (io.grpc.stub.StreamObserver<airquality.AirQualityData>) responseObserver);
           break;
         case METHODID_SET_ALERT_THRESHOLD:
           serviceImpl.setAlertThreshold((airquality.Thresholds) request,
@@ -412,7 +357,6 @@ public final class AQMSGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new AQMSFileDescriptorSupplier())
               .addMethod(getGetCurrentAirQualityMethod())
-              .addMethod(getGetAirQualityHistoryMethod())
               .addMethod(getSetAlertThresholdMethod())
               .build();
         }
