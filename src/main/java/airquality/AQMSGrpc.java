@@ -213,7 +213,7 @@ public final class AQMSGrpc {
 
     /**
      */
-    public static airquality.COLevels getCurrentAirQuality(airquality.SensorID request) {
+    public airquality.COLevels getCurrentAirQuality(airquality.SensorID request) {
       return blockingUnaryCall(
           getChannel(), getGetCurrentAirQualityMethod(), getCallOptions(), request);
     }

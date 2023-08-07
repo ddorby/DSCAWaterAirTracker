@@ -6,27 +6,23 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceListener;
 
-import airquality.AQMSGrpc;
-import airquality.COLevels;
-import airquality.SensorID;
-import airquality.client.AirQualityDiscovery;
+import waterquality.WQMSGrpc;
+import waterquality.CurrentPhLevels;
+import waterquality.SensorId;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import waterquality.WQMSGrpc;
 import waterquality.WQMSGrpc.WQMSBlockingStub;
 
-public class WaterQualityDiscovery implements ServiceListener{
+public class WaterQualityDiscovery implements ServiceListener {
 	
 	@Override
 	public void serviceAdded(ServiceEvent event) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void serviceRemoved(ServiceEvent event) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -45,20 +41,31 @@ public class WaterQualityDiscovery implements ServiceListener{
 			WQMSBlockingStub stub = WQMSGrpc.newBlockingStub(channel);
 			
 			// Prepare the request
-			SensorID request = SensorID.newBuilder().setId("SensorID 1").build();
+			SensorId request = SensorId.newBuilder().setId("SensorID 1").build();
 			
 			//Make the RPC call to the server		
-			COLevels response = stub.getCurrentPhLevels(request);
+			CurrentPhLevels response = stub.getCurrentWaterQuality(request);
 			
 			// Print the response
-			System.out.println("PH Levels: " + response.getLevels());
+			System.out.println("PH Levels: " + response.getPh());
 			
 			// Shutdown the channel gracefully
 			channel.shutdown();
 
 		}
-		
 	}
+	
+	public static void main1 (String []  args ) throws Exception {
+		
+		JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
+		
+		jmdns.addServiceListener("_http._tcp.local.", new WaterQualityDiscovery());
+		
+		// Keep the program running indefinitely
+		Thread.currentThread().join();
+	}
+
+
 	
 	public static void main (String []  args ) throws Exception {
 		

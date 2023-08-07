@@ -1,140 +1,170 @@
 package UserGUI;
+
 import javax.swing.*;
 
-import airquality.AQMSGrpc;
-import airquality.AQMSGrpc.AQMSBlockingStub;
+import airquality.Airquality;
 import airquality.COLevels;
-import airquality.SensorID;
-import airquality.SuccessStatus;
-import airquality.Thresholds;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
+import alert.AlertNotificationServiceGrpc;
+import alert.RegisterRequest;
+import alert.RegisterResponse;
+import alert.UnregisterRequest;
+import alert.UnregisterResponse;
+import alert.StreamAlertsRequest;
+import alert.AlertMessage;
+
 import waterquality.WQMSGrpc;
 import waterquality.CurrentPhLevels;
+import airquality.COLevels;
 import waterquality.SensorId;
-import waterquality.SetAlertThresholdRequest;
-import waterquality.SetAlertThresholdResponse;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.StreamObserver;
 
 public class ClientGUI {
 
+    private JTextField contactInformationField;
+    private JButton registerButton;
+    private JButton unregisterButton;
+    private JButton streamAlertsButton;
+    private JLabel registerStatusLabel;
+    private JLabel unregisterStatusLabel;
+    private JTextArea alertMessagesArea;
     private JTextField sensorIdField;
-    private JTextField minPhField;
-    private JTextField maxPhField;
-    private JLabel currentPhLabel;
-    private JButton fetchButton;
-    private JButton setThresholdButton;
-    private JPanel panelMain;
-    
-    private WQMSGrpc.WQMSBlockingStub blockingStub;
+    private JButton getPhLevelButton;
+    private JButton getCOLevelButton;
+    private JLabel phLevelLabel;
+    private JLabel coLevelLabel;
+    private JPanel mainPanel;
 
-    public void WQMSClient(String host, int port) {
-        ManagedChannel managedChannel = ManagedChannelBuilder.forAddress(host, port)
-                .usePlaintext()
-                .build();
-        blockingStub = WQMSGrpc.newBlockingStub(managedChannel);
-        
-        fetchButton.addActionListener(new ActionListener() {
+    private ManagedChannel channel;
+    private AlertNotificationServiceGrpc.AlertNotificationServiceBlockingStub alertBlockingStub;
+    private AlertNotificationServiceGrpc.AlertNotificationServiceStub alertAsyncStub;
+    private WQMSGrpc.WQMSBlockingStub waterQualityStub;
+
+    public ClientGUI() {
+        // Initialize GUI components
+        mainPanel = new JPanel();
+        sensorIdField = new JTextField(20);
+        getPhLevelButton = new JButton("Get pH Level");
+        getCOLevelButton = new JButton("Get CO Level");  
+        phLevelLabel = new JLabel();
+        coLevelLabel = new JLabel(); 
+        contactInformationField = new JTextField(20);
+        registerButton = new JButton("Register");
+        unregisterButton = new JButton("Unregister");
+        streamAlertsButton = new JButton("Stream Alerts");
+        registerStatusLabel = new JLabel();
+        unregisterStatusLabel = new JLabel();
+        alertMessagesArea = new JTextArea(5, 20);
+
+        mainPanel.add(sensorIdField);
+        mainPanel.add(getPhLevelButton);
+        mainPanel.add(phLevelLabel);
+        mainPanel.add(getCOLevelButton);
+        mainPanel.add(coLevelLabel);
+        mainPanel.add(contactInformationField);
+        mainPanel.add(registerButton);
+        mainPanel.add(registerStatusLabel);
+        mainPanel.add(unregisterButton);
+        mainPanel.add(unregisterStatusLabel);
+        mainPanel.add(streamAlertsButton);
+        mainPanel.add(new JScrollPane(alertMessagesArea));
+
+        // Initialize gRPC client
+        channel = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
+        alertBlockingStub = AlertNotificationServiceGrpc.newBlockingStub(channel);
+        alertAsyncStub = AlertNotificationServiceGrpc.newStub(channel);
+        waterQualityStub = WQMSGrpc.newBlockingStub(channel);
+
+        getPhLevelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                fetchCurrentPh();
+            public void actionPerformed(ActionEvent e) {
+                String sensorId = sensorIdField.getText();
+
+                SensorId request = SensorId.newBuilder().setId(sensorId).build();
+                CurrentPhLevels response = waterQualityStub.getCurrentWaterQuality(request);
+
+                float ph = response.getPh();
+                phLevelLabel.setText("Current pH level: " + ph);
             }
         });
 
-        setThresholdButton.addActionListener(new ActionListener() {
+        getCOLevelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                setAlertThreshold();
-            }
-        });
-    }
+            public void actionPerformed(ActionEvent e) {
+                String sensorId = sensorIdField.getText();
 
-    private void fetchCurrentPh() {
-        SensorId sensorId = SensorId.newBuilder()
-                .setId(sensorIdField.getText())
-                .build();
+                SensorId request = SensorId.newBuilder().setId(sensorId).build();
+                //COLevels response = Airquality.getCOLevels(request);
 
-        CurrentPhLevels phLevels = blockingStub.getCurrentWaterQuality(sensorId);
-
-        currentPhLabel.setText(String.valueOf(phLevels.getPh()));
-    }
-
-    private void setAlertThreshold() {
-        SetAlertThresholdRequest request = SetAlertThresholdRequest.newBuilder()
-                .setMinPh(Float.parseFloat(minPhField.getText()))
-                .setMaxPh(Float.parseFloat(maxPhField.getText()))
-                .build();
-
-        SetAlertThresholdResponse response = blockingStub.setAlertThreshold(request);
-
-        if(response.getSuccess()){
-            JOptionPane.showMessageDialog(panelMain, "Thresholds successfully set.");
-        } else {
-            JOptionPane.showMessageDialog(panelMain, "Failed to set thresholds.");
-        }
-    }
-    
-    // fields for air quality
-    private JTextField aqSensorIdField;
-    private JLabel currentCoLabel;
-    private JTextField coThresholdField;
-    private JButton fetchAQButton;
-    private JButton setCoThresholdButton;
-    
-    private AQMSGrpc.AQMSBlockingStub aqBlockingStub;
-
-    public void WQMSAQMSClient(String host, int port) {
-        // existing initializations...
-        
-        // initialization for air quality
-        aqBlockingStub = AQMSGrpc.newBlockingStub(managedChannel);
-
-        fetchAQButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                fetchCurrentCo();
+                //float coLevel = response.getCOLevel();
+                //coLevelLabel.setText("Current CO level: " + coLevel);
             }
         });
 
-        setCoThresholdButton.addActionListener(new ActionListener() {
+        registerButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                setCoAlertThreshold();
+            public void actionPerformed(ActionEvent e) {
+                RegisterRequest request = RegisterRequest.newBuilder()
+                    .setContactInformation(contactInformationField.getText())
+                    .build();
+
+                RegisterResponse response = alertBlockingStub.registerForAlerts(request);
+                registerStatusLabel.setText(response.getMessage());
             }
         });
-    }
 
-    private void fetchCurrentCo() {
-        SensorID sensorID = SensorID.newBuilder()
-                .setId(aqSensorIdField.getText())
-                .build();
+        unregisterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UnregisterRequest request = UnregisterRequest.newBuilder()
+                    .setContactInformation(contactInformationField.getText())
+                    .build();
 
-        COLevels coLevels = AQMSBlockingStub.getCurrentAirQuality(sensorID);
+                UnregisterResponse response = alertBlockingStub.unregisterForAlerts(request);
+                unregisterStatusLabel.setText(response.getMessage());
+            }
+        });
 
-        currentCoLabel.setText(String.valueOf(coLevels.getLevels()));
-    }
+        streamAlertsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StreamObserver<AlertMessage> responseObserver = new StreamObserver<AlertMessage>() {
+                    @Override
+                    public void onNext(AlertMessage alertMessage) {
+                        alertMessagesArea.append(alertMessage.getContent() + "\n");
+                    }
 
-    private void setCoAlertThreshold() {
-        Thresholds request = Thresholds.newBuilder()
-                .setCoThresholds(Float.parseFloat(coThresholdField.getText()))
-                .build();
+                    @Override
+                    public void onError(Throwable t) {
+                        alertMessagesArea.append("Error: " + t.getMessage() + "\n");
+                    }
 
-        SuccessStatus response = AQMSBlockingStub.setAlertThreshold(request);
+                    @Override
+                    public void onCompleted() {
+                        alertMessagesArea.append("Alert streaming completed.\n");
+                    }
+                };
 
-        if(response.getSuccess()){
-            JOptionPane.showMessageDialog(panelMain, "CO threshold successfully set.");
-        } else {
-            JOptionPane.showMessageDialog(panelMain, "Failed to set CO threshold.");
-        }
+                StreamObserver<StreamAlertsRequest> requestObserver = alertAsyncStub.streamAlerts(responseObserver);
+                StreamAlertsRequest request = StreamAlertsRequest.newBuilder()
+                    .setContactInformation(contactInformationField.getText())
+                    .build();
+
+                requestObserver.onNext(request);
+                requestObserver.onCompleted();
+            }
+        });
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Water & Air Quality Management System");
-        frame.setContentPane(new WQMSClient("localhost", 50051).panelMain);
+        JFrame frame = new JFrame("Water Quality and Alert Client");
+        frame.setContentPane(new ClientGUI().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
